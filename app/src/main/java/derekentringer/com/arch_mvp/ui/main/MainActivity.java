@@ -6,6 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -41,42 +43,40 @@ public class MainActivity extends AppCompatActivity implements MainView {
 		setContentView(R.layout.activity_main);
 		progressBar = (ProgressBar) findViewById(R.id.progress);
 		infoTextView = (TextView) findViewById(R.id.text_info);
+
 		toolbar = (Toolbar) findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
 
 		reposRecyclerView = (RecyclerView) findViewById(R.id.repos_recycler_view);
 		setupRecyclerView(reposRecyclerView);
+
+        editTextUsername = (EditText) findViewById(R.id.edit_text_username);
+        editTextUsername.addTextChangedListener(new TextWatcher() {
+            public void afterTextChanged(Editable editable) {
+                if (editable.length() > 3) {
+                    mainPresenter.loadRepositories(editable.toString());
+                }
+            }
+
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+        });
 	}
 
-	@Override
-	public void showRepositories(List<Repository> repositories) {
-		RepositoryAdapter adapter = (RepositoryAdapter) reposRecyclerView.getAdapter();
-		adapter.setRepositories(repositories);
-		adapter.notifyDataSetChanged();
-
-		reposRecyclerView.requestFocus();
-		hideSoftKeyboard();
-
-		progressBar.setVisibility(View.INVISIBLE);
-		infoTextView.setVisibility(View.INVISIBLE);
-
-		reposRecyclerView.setVisibility(View.VISIBLE);
-		setupRecyclerView(reposRecyclerView);
-
-		editTextUsername = (EditText) findViewById(R.id.edit_text_username);
-		/*editTextUsername.addTextChangedListener(new TextWatcher() {
-			public void afterTextChanged(Editable s) {
-				int i++;
-				tv.setText(String.valueOf(i) + " / " + String.valueOf(charCounts));
-			}
-
-			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-			}
-
-			public void onTextChanged(CharSequence s, int start, int before, int count) {
-			}
-		});*/
-	}
+    @Override
+    public void showRepositories(List<Repository> repositories) {
+        RepositoryAdapter adapter = (RepositoryAdapter) reposRecyclerView.getAdapter();
+        adapter.setRepositories(repositories);
+        adapter.notifyDataSetChanged();
+        reposRecyclerView.requestFocus();
+        hideSoftKeyboard();
+        progressBar.setVisibility(View.INVISIBLE);
+        infoTextView.setVisibility(View.INVISIBLE);
+        reposRecyclerView.setVisibility(View.VISIBLE);
+    }
 
 	@Override
 	public void showMessage(int stringId) {
