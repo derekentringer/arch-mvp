@@ -6,9 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.KeyEvent;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -66,16 +64,18 @@ public class MainActivity extends AppCompatActivity implements MainView {
 		setupRecyclerView(reposRecyclerView);
 
 		editTextUsername = (EditText) findViewById(R.id.edit_text_username);
-		editTextUsername.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-			@Override
-			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-				if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-					mainPresenter.loadRepositories(editTextUsername.getText().toString());
-					return true;
-				}
-				return false;
+		/*editTextUsername.addTextChangedListener(new TextWatcher() {
+			public void afterTextChanged(Editable s) {
+				int i++;
+				tv.setText(String.valueOf(i) + " / " + String.valueOf(charCounts));
 			}
-		});
+
+			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+			}
+
+			public void onTextChanged(CharSequence s, int start, int before, int count) {
+			}
+		});*/
 	}
 
 	@Override
