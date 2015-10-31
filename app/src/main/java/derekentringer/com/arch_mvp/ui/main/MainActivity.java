@@ -2,36 +2,27 @@ package derekentringer.com.arch_mvp.ui.main;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import java.util.List;
 
 import derekentringer.com.arch_mvp.R;
+import derekentringer.com.arch_mvp.databinding.MainActivityBinding;
 import derekentringer.com.arch_mvp.model.Repository;
 import derekentringer.com.arch_mvp.presenter.MainPresenter;
+import derekentringer.com.arch_mvp.ui.BaseActivity;
 import derekentringer.com.arch_mvp.view.MainView;
 
-public class MainActivity extends AppCompatActivity implements MainView {
+public class MainActivity extends BaseActivity<MainActivityBinding> implements MainView {
 
 	private static final String TAG = MainActivity.class.getSimpleName();
 
 	private MainPresenter mainPresenter;
-
-	private ProgressBar progressBar;
-	private TextView infoTextView;
-	private Toolbar toolbar;
-	private RecyclerView reposRecyclerView;
-	private EditText editTextUsername;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -41,56 +32,52 @@ public class MainActivity extends AppCompatActivity implements MainView {
 		mainPresenter.attachView(this);
 
 		setContentView(R.layout.activity_main);
-		progressBar = (ProgressBar) findViewById(R.id.progress);
-		infoTextView = (TextView) findViewById(R.id.text_info);
+        
+		initViews();
+	}
 
-		toolbar = (Toolbar) findViewById(R.id.toolbar);
-		setSupportActionBar(toolbar);
-
-		reposRecyclerView = (RecyclerView) findViewById(R.id.repos_recycler_view);
-		setupRecyclerView(reposRecyclerView);
-
-        editTextUsername = (EditText) findViewById(R.id.edit_text_username);
-        editTextUsername.addTextChangedListener(new TextWatcher() {
+    private void initViews() {
+        setSupportActionBar(getViewBinding().toolbar);
+        setupRecyclerView(getViewBinding().reposRecyclerView);
+        getViewBinding().editTextUsername.addTextChangedListener(new TextWatcher() {
             public void afterTextChanged(Editable editable) {
                 if (editable.length() > 3) {
                     mainPresenter.loadRepositories(editable.toString());
                 }
             }
 
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
         });
-	}
+    }
 
     @Override
     public void showRepositories(List<Repository> repositories) {
-        RepositoryAdapter adapter = (RepositoryAdapter) reposRecyclerView.getAdapter();
+        RepositoryAdapter adapter = (RepositoryAdapter) getViewBinding().reposRecyclerView.getAdapter();
         adapter.setRepositories(repositories);
         adapter.notifyDataSetChanged();
-        reposRecyclerView.requestFocus();
+        getViewBinding().reposRecyclerView.requestFocus();
+
         hideSoftKeyboard();
-        progressBar.setVisibility(View.INVISIBLE);
-        infoTextView.setVisibility(View.INVISIBLE);
-        reposRecyclerView.setVisibility(View.VISIBLE);
+
+        getViewBinding().progress.setVisibility(View.INVISIBLE);
+        getViewBinding().textInfo.setVisibility(View.INVISIBLE);
+        getViewBinding().reposRecyclerView.setVisibility(View.VISIBLE);
     }
 
 	@Override
 	public void showMessage(int stringId) {
-		progressBar.setVisibility(View.INVISIBLE);
-		infoTextView.setVisibility(View.VISIBLE);
-		reposRecyclerView.setVisibility(View.INVISIBLE);
-		infoTextView.setText(getString(stringId));
+		getViewBinding().progress.setVisibility(View.INVISIBLE);
+		getViewBinding().textInfo.setVisibility(View.VISIBLE);
+		getViewBinding().reposRecyclerView.setVisibility(View.INVISIBLE);
+		getViewBinding().textInfo.setText(getString(stringId));
 	}
 
 	@Override
 	public void showProgressIndicator() {
-		progressBar.setVisibility(View.VISIBLE);
-		infoTextView.setVisibility(View.INVISIBLE);
-		reposRecyclerView.setVisibility(View.INVISIBLE);
+		getViewBinding().progress.setVisibility(View.VISIBLE);
+		getViewBinding().textInfo.setVisibility(View.INVISIBLE);
+		getViewBinding().reposRecyclerView.setVisibility(View.INVISIBLE);
 	}
 
 	@Override
@@ -118,7 +105,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
 
 	private void hideSoftKeyboard() {
 		InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-		imm.hideSoftInputFromWindow(editTextUsername.getWindowToken(), 0);
+		imm.hideSoftInputFromWindow(getViewBinding().editTextUsername.getWindowToken(), 0);
 	}
 
 }
