@@ -16,6 +16,7 @@ import derekentringer.com.arch_mvp.databinding.MainActivityBinding;
 import derekentringer.com.arch_mvp.model.Repository;
 import derekentringer.com.arch_mvp.presenter.MainPresenter;
 import derekentringer.com.arch_mvp.ui.BaseActivity;
+import derekentringer.com.arch_mvp.ui.repo.RepoActivity;
 import derekentringer.com.arch_mvp.view.MainView;
 
 public class MainActivity extends BaseActivity<MainActivityBinding> implements MainView {
@@ -32,7 +33,7 @@ public class MainActivity extends BaseActivity<MainActivityBinding> implements M
 		mainPresenter.attachView(this);
 
 		setContentView(R.layout.activity_main);
-        
+
 		initViews();
 	}
 
@@ -46,8 +47,11 @@ public class MainActivity extends BaseActivity<MainActivityBinding> implements M
                 }
             }
 
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
         });
     }
 
@@ -90,7 +94,7 @@ public class MainActivity extends BaseActivity<MainActivityBinding> implements M
 		adapter.setCallback(new RepositoryAdapter.Callback() {
 			@Override
 			public void onItemClick(Repository repository) {
-				//startActivity(RepositoryActivity.newIntent(MainActivity.this, repository));
+				startActivity(RepoActivity.newInstance(MainActivity.this, repository));
 			}
 		});
 		recyclerView.setAdapter(adapter);
