@@ -7,7 +7,6 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 
 import java.util.List;
 
@@ -17,6 +16,7 @@ import derekentringer.com.arch_mvp.model.Repository;
 import derekentringer.com.arch_mvp.presenter.MainPresenter;
 import derekentringer.com.arch_mvp.ui.BaseActivity;
 import derekentringer.com.arch_mvp.ui.repo.RepoActivity;
+import derekentringer.com.arch_mvp.util.BaseAppUtils;
 import derekentringer.com.arch_mvp.view.MainView;
 
 public class MainActivity extends BaseActivity<MainActivityBinding> implements MainView {
@@ -37,24 +37,6 @@ public class MainActivity extends BaseActivity<MainActivityBinding> implements M
 		initViews();
 	}
 
-    private void initViews() {
-        setSupportActionBar(getViewBinding().toolbar);
-        setupRecyclerView(getViewBinding().reposRecyclerView);
-        getViewBinding().editTextUsername.addTextChangedListener(new TextWatcher() {
-            public void afterTextChanged(Editable editable) {
-                if (editable.length() > 3) {
-                    mainPresenter.loadRepositories(editable.toString());
-                }
-            }
-
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
-        });
-    }
-
     @Override
     public void showRepositories(List<Repository> repositories) {
         RepositoryAdapter adapter = (RepositoryAdapter) getViewBinding().reposRecyclerView.getAdapter();
@@ -62,7 +44,7 @@ public class MainActivity extends BaseActivity<MainActivityBinding> implements M
         adapter.notifyDataSetChanged();
         getViewBinding().reposRecyclerView.requestFocus();
 
-        hideSoftKeyboard();
+        BaseAppUtils.hideKeyboard(this);
 
         getViewBinding().progress.setVisibility(View.INVISIBLE);
         getViewBinding().textInfo.setVisibility(View.INVISIBLE);
@@ -89,6 +71,30 @@ public class MainActivity extends BaseActivity<MainActivityBinding> implements M
 		return this;
 	}
 
+    @Override
+    protected void onDestroy() {
+        mainPresenter.detachView();
+        super.onDestroy();
+    }
+
+    private void initViews() {
+        setSupportActionBar(getViewBinding().toolbar);
+        setupRecyclerView(getViewBinding().reposRecyclerView);
+        getViewBinding().editTextUsername.addTextChangedListener(new TextWatcher() {
+            public void afterTextChanged(Editable editable) {
+                if (editable.length() > 3) {
+                    mainPresenter.loadRepositories(editable.toString());
+                }
+            }
+
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+        });
+    }
+
 	private void setupRecyclerView(RecyclerView recyclerView) {
 		RepositoryAdapter adapter = new RepositoryAdapter();
 		adapter.setCallback(new RepositoryAdapter.Callback() {
@@ -99,17 +105,6 @@ public class MainActivity extends BaseActivity<MainActivityBinding> implements M
 		});
 		recyclerView.setAdapter(adapter);
 		recyclerView.setLayoutManager(new LinearLayoutManager(this));
-	}
-
-	@Override
-	protected void onDestroy() {
-		mainPresenter.detachView();
-		super.onDestroy();
-	}
-
-	private void hideSoftKeyboard() {
-		InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-		imm.hideSoftInputFromWindow(getViewBinding().editTextUsername.getWindowToken(), 0);
 	}
 
 }
