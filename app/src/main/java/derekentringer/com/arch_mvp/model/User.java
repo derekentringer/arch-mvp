@@ -2,6 +2,7 @@ package derekentringer.com.arch_mvp.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.text.TextUtils;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -119,5 +120,13 @@ public class User implements Parcelable {
             return new User[size];
         }
     };
+
+    public boolean hasEmail() {
+        return TextUtils.isEmpty(this.email);
+    }
+
+    public boolean hasLocation() {
+        return TextUtils.isEmpty(this.location);
+    }
 
 }

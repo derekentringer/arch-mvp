@@ -2,6 +2,7 @@ package derekentringer.com.arch_mvp.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.text.TextUtils;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -160,6 +161,14 @@ public class Repository implements Parcelable {
         dest.writeString(this.homepage);
         dest.writeParcelable(this.owner, 0);
         dest.writeByte(fork ? (byte) 1 : (byte) 0);
+    }
+
+    public boolean hasHomePage() {
+        return !TextUtils.isEmpty(this.getHomepage());
+    }
+
+    public boolean hasLanguage() {
+        return !TextUtils.isEmpty(this.getLanguage());
     }
 
 }

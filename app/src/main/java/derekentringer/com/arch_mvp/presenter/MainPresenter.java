@@ -44,10 +44,10 @@ public class MainPresenter implements BasePresenter<MainView> {
             subscription.unsubscribe();
         }
 
-        App application = App.getContext(mainView.getContext());
+        App app = App.getContext(mainView.getContext());
         subscription = RetroFitClient.retroFitApi.publicRepositories(username)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(application.defaultSubscriberScheduler())
+                .subscribeOn(app.getDefaultSubscriberScheduler())
                 .subscribe(new Subscriber<List<Repository>>() {
                     @Override
                     public void onCompleted() {

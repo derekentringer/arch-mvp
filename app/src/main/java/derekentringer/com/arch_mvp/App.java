@@ -21,7 +21,7 @@ public class App extends Application {
 		return (App) context.getApplicationContext();
 	}
 
-	public Scheduler defaultSubscriberScheduler() {
+	public Scheduler getDefaultSubscriberScheduler() {
 		if (defaultSubscriberScheduler == null) {
 			defaultSubscriberScheduler = Schedulers.io();
 		}
