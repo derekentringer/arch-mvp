@@ -9,17 +9,30 @@ import rx.schedulers.Schedulers;
 
 public class App extends Application {
 
+    private RetroFitClient retroFitClient;
 	private Scheduler defaultSubscriberScheduler;
 
     @Override
     public void onCreate() {
         super.onCreate();
-        RetroFitClient.getInstance().initialize(this);
+        //RetroFitClient.getInstance().initialize();
     }
 
 	public static App getContext(Context context) {
 		return (App) context.getApplicationContext();
 	}
+
+    public RetroFitClient getRetroFitClient() {
+        if (retroFitClient == null) {
+            retroFitClient = RetroFitClient.Factory.create();
+        }
+        return retroFitClient;
+    }
+
+    //For setting mocks during testing
+    public void setRetroFitClient(RetroFitClient retroFitClient) {
+        this.retroFitClient = retroFitClient;
+    }
 
 	public Scheduler getDefaultSubscriberScheduler() {
 		if (defaultSubscriberScheduler == null) {
@@ -28,8 +41,8 @@ public class App extends Application {
 		return defaultSubscriberScheduler;
 	}
 
-	public void setDefaultSubscriberScheduler(Scheduler scheduler) {
-		this.defaultSubscriberScheduler = scheduler;
-	}
+    public void setDefaultSubscriberScheduler(Scheduler scheduler) {
+        this.defaultSubscriberScheduler = scheduler;
+    }
 
 }

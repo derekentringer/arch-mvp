@@ -6,7 +6,6 @@ import derekentringer.com.arch_mvp.App;
 import derekentringer.com.arch_mvp.R;
 import derekentringer.com.arch_mvp.model.Repository;
 import derekentringer.com.arch_mvp.network.ErrorCode;
-import derekentringer.com.arch_mvp.network.RetroFitClient;
 import derekentringer.com.arch_mvp.view.MainView;
 import rx.Subscriber;
 import rx.Subscription;
@@ -45,7 +44,7 @@ public class MainPresenter implements BasePresenter<MainView> {
         }
 
         App app = App.getContext(mainView.getContext());
-        subscription = RetroFitClient.retroFitApi.publicRepositories(username)
+        subscription = app.getRetroFitClient().publicRepositories(username)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(app.getDefaultSubscriberScheduler())
                 .subscribe(new Subscriber<List<Repository>>() {

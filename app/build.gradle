@@ -20,9 +20,6 @@ android {
     }
 }
 
-
-
-
 dependencies {
     Map<String, String> dependencies = rootProject.ext.dependencies;
 

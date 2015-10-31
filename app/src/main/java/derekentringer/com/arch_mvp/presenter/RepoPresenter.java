@@ -2,7 +2,6 @@ package derekentringer.com.arch_mvp.presenter;
 
 import derekentringer.com.arch_mvp.App;
 import derekentringer.com.arch_mvp.model.User;
-import derekentringer.com.arch_mvp.network.RetroFitClient;
 import derekentringer.com.arch_mvp.view.RepoView;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -31,7 +30,7 @@ public class RepoPresenter implements BasePresenter<RepoView> {
 
     public void loadUser(String userUrl) {
         App app = App.getContext(repoView.getContext());
-        subscription = RetroFitClient.retroFitApi.userFromUrl(userUrl)
+        subscription = app.getRetroFitClient().userFromUrl(userUrl)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(app.getDefaultSubscriberScheduler())
                 .subscribe(new Action1<User>() {

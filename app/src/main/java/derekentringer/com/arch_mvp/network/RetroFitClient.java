@@ -1,35 +1,35 @@
 package derekentringer.com.arch_mvp.network;
 
-import android.content.Context;
+import java.util.List;
 
+import derekentringer.com.arch_mvp.model.Repository;
+import derekentringer.com.arch_mvp.model.User;
 import derekentringer.com.arch_mvp.settings.AppSettings;
 import retrofit.GsonConverterFactory;
 import retrofit.Retrofit;
 import retrofit.RxJavaCallAdapterFactory;
+import retrofit.http.GET;
+import retrofit.http.Path;
+import retrofit.http.Url;
+import rx.Observable;
 
-public class RetroFitClient {
+public interface RetroFitClient {
 
-    private static RetroFitClient retroFitClient = new RetroFitClient();
-    public static RetroFitApi retroFitApi;
+    @GET("users/{username}/repos")
+    Observable<List<Repository>> publicRepositories(@Path("username") String username);
 
-    protected RetroFitClient() {
-    }
+    @GET
+    Observable<User> userFromUrl(@Url String userUrl);
 
-    public static RetroFitClient getInstance() {
-        if (retroFitClient == null) {
-            retroFitClient = new RetroFitClient();
+    class Factory {
+        public static RetroFitClient create() {
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(AppSettings.API_BASE_URL)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                    .build();
+            return retrofit.create(RetroFitClient.class);
         }
-        return retroFitClient;
-    }
-
-    public void initialize(Context context) {
-        retroFitClient = this;
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(AppSettings.API_BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                .build();
-        retroFitApi = retrofit.create(RetroFitApi.class);
     }
 
 }

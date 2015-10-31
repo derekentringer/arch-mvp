@@ -85,6 +85,10 @@ public class User implements Parcelable {
         this.avatarUrl = avatarUrl;
     }
 
+    public User() {
+
+    }
+
     @Override
     public int describeContents() {
         return 0;
