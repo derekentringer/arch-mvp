@@ -15,28 +15,28 @@ public class Repository implements Parcelable {
 	private String name;
 
 	@SerializedName("description")
-	public String description;
+	private String description;
 
 	@SerializedName("forks")
-	public int forks;
+	private int forks;
 
 	@SerializedName("watchers")
-	public int watchers;
+	private int watchers;
 
 	@SerializedName("stargazers_count")
-	public int stars;
+	private int stars;
 
 	@SerializedName("language")
-	public String language;
+	private String language;
 
 	@SerializedName("homepage")
-	public String homepage;
+	private String homepage;
 
 	@SerializedName("owner")
-	public User owner;
+	private User owner;
 
 	@SerializedName("fork")
-	public boolean fork;
+	private boolean fork;
 
     public Repository() {
     }

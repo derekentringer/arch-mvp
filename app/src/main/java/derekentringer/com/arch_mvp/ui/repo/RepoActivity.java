@@ -82,7 +82,7 @@ public class RepoActivity extends BaseActivity<RepoActivityBinding> implements R
         getViewBinding().textFork.setVisibility(repository.isFork() ? View.VISIBLE : View.GONE);
 
         Picasso.with(this)
-                .load(repository.owner.getAvatarUrl())
+                .load(repository.getOwner().getAvatarUrl())
                 .placeholder(R.drawable.placeholder)
                 .into(getViewBinding().imageOwner);
     }
