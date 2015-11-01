@@ -1,6 +1,7 @@
-package derekentringer.com.arch_mvp.view;
+package derekentringer.com.arch_mvp.ui.repo;
 
 import derekentringer.com.arch_mvp.model.User;
+import derekentringer.com.arch_mvp.ui.BaseView;
 
 public interface RepoView extends BaseView {
 

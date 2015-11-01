@@ -12,9 +12,7 @@ import derekentringer.com.arch_mvp.R;
 import derekentringer.com.arch_mvp.databinding.RepoActivityBinding;
 import derekentringer.com.arch_mvp.model.Repository;
 import derekentringer.com.arch_mvp.model.User;
-import derekentringer.com.arch_mvp.presenter.RepoPresenter;
 import derekentringer.com.arch_mvp.ui.BaseActivity;
-import derekentringer.com.arch_mvp.view.RepoView;
 
 public class RepoActivity extends BaseActivity<RepoActivityBinding> implements RepoView {
 

@@ -1,8 +1,8 @@
-package derekentringer.com.arch_mvp.presenter;
+package derekentringer.com.arch_mvp.ui.repo;
 
 import derekentringer.com.arch_mvp.App;
 import derekentringer.com.arch_mvp.model.User;
-import derekentringer.com.arch_mvp.view.RepoView;
+import derekentringer.com.arch_mvp.ui.BasePresenter;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;

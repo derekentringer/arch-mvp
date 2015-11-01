@@ -1,4 +1,4 @@
-package derekentringer.com.arch_mvp.presenter;
+package derekentringer.com.arch_mvp.ui;
 
 public interface BasePresenter<V> {
 

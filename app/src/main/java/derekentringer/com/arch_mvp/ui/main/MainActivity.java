@@ -13,11 +13,9 @@ import java.util.List;
 import derekentringer.com.arch_mvp.R;
 import derekentringer.com.arch_mvp.databinding.MainActivityBinding;
 import derekentringer.com.arch_mvp.model.Repository;
-import derekentringer.com.arch_mvp.presenter.MainPresenter;
 import derekentringer.com.arch_mvp.ui.BaseActivity;
 import derekentringer.com.arch_mvp.ui.repo.RepoActivity;
 import derekentringer.com.arch_mvp.util.BaseAppUtils;
-import derekentringer.com.arch_mvp.view.MainView;
 
 public class MainActivity extends BaseActivity<MainActivityBinding> implements MainView {
 

@@ -15,7 +15,6 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        //RetroFitClient.getInstance().initialize();
     }
 
 	public static App getContext(Context context) {
@@ -29,7 +28,6 @@ public class App extends Application {
         return retroFitClient;
     }
 
-    //For setting mocks during testing
     public void setRetroFitClient(RetroFitClient retroFitClient) {
         this.retroFitClient = retroFitClient;
     }

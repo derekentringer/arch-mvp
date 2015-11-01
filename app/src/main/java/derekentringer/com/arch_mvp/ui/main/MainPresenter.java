@@ -1,4 +1,4 @@
-package derekentringer.com.arch_mvp.presenter;
+package derekentringer.com.arch_mvp.ui.main;
 
 import java.util.List;
 
@@ -6,7 +6,7 @@ import derekentringer.com.arch_mvp.App;
 import derekentringer.com.arch_mvp.R;
 import derekentringer.com.arch_mvp.model.Repository;
 import derekentringer.com.arch_mvp.network.ErrorCode;
-import derekentringer.com.arch_mvp.view.MainView;
+import derekentringer.com.arch_mvp.ui.BasePresenter;
 import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;

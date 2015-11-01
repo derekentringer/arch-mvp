@@ -1,4 +1,4 @@
-package derekentringer.com.arch_mvp.view;
+package derekentringer.com.arch_mvp.ui;
 
 import android.content.Context;
 

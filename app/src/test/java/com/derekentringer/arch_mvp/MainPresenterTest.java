@@ -10,14 +10,18 @@ import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 
+import java.util.Collections;
 import java.util.List;
 
 import derekentringer.com.arch_mvp.App;
 import derekentringer.com.arch_mvp.BuildConfig;
+import derekentringer.com.arch_mvp.R;
 import derekentringer.com.arch_mvp.model.Repository;
 import derekentringer.com.arch_mvp.network.RetroFitClient;
-import derekentringer.com.arch_mvp.presenter.MainPresenter;
-import derekentringer.com.arch_mvp.view.MainView;
+import derekentringer.com.arch_mvp.ui.main.MainPresenter;
+import derekentringer.com.arch_mvp.ui.main.MainView;
+import retrofit.HttpException;
+import retrofit.Response;
 import rx.Observable;
 import rx.schedulers.Schedulers;
 
@@ -51,10 +55,42 @@ public class MainPresenterTest {
     }
 
     @Test
-    public void loadRepositoriesCallsShowRepositories() {
-        String username = "derek";
+    public void loadRepositoriesShowMessageDefaultError() {
+        String username = "username";
+        when(retroFitClient.publicRepositories(username))
+                .thenReturn(Observable.<List<Repository>>error(new RuntimeException("error")));
+        mainPresenter.loadRepositories(username);
+        verify(mainView).showProgressIndicator();
+        verify(mainView).showMessage(R.string.error_loading_repos);
+    }
+
+    @Test
+    public void loadRepositoriesShowMessageUserNotFound() {
+        String username = "username";
+        when(retroFitClient.publicRepositories(username))
+                .thenReturn(Observable.<List<Repository>>error(new HttpException(Response.error(404, null))));
+        mainPresenter.loadRepositories(username);
+        verify(mainView).showProgressIndicator();
+        verify(mainView).showMessage(R.string.error_username_not_found);
+    }
+
+    @Test
+    public void loadRepositoriesShowMessageNoPublicRepos() {
+        String username = "username";
+        when(retroFitClient.publicRepositories(username))
+                .thenReturn(Observable.just(Collections.<Repository>emptyList()));
+        mainPresenter.loadRepositories(username);
+        verify(mainView).showProgressIndicator();
+        verify(mainView).showMessage(R.string.text_empty_repos);
+    }
+
+
+    @Test
+    public void loadPublicRepositoriesShowRepositories() {
+        String username = "username";
         List<Repository> repositories = RepositoryMockModel.newListOfRepositories(10);
-        when(retroFitClient.publicRepositories(username)).thenReturn(Observable.just(repositories));
+        when(retroFitClient.publicRepositories(username))
+                .thenReturn(Observable.just(repositories));
         mainPresenter.loadRepositories(username);
         verify(mainView).showProgressIndicator();
         verify(mainView).showRepositories(repositories);
