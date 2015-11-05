@@ -23,6 +23,12 @@ public class MainActivity extends BaseActivity<MainActivityBinding> implements M
 
 	private MainPresenter mainPresenter;
 
+    //region lifecycle
+    @Override
+    public Context getContext() {
+        return this;
+    }
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -35,6 +41,44 @@ public class MainActivity extends BaseActivity<MainActivityBinding> implements M
 		initViews();
 	}
 
+    @Override
+    protected void onDestroy() {
+        mainPresenter.detachView();
+        super.onDestroy();
+    }
+    //endregion
+
+    private void initViews() {
+        setSupportActionBar(getViewBinding().toolbar);
+        setupRecyclerView(getViewBinding().reposRecyclerView);
+        getViewBinding().editTextUsername.addTextChangedListener(new TextWatcher() {
+            public void afterTextChanged(Editable editable) {
+                if (editable.length() > 3) {
+                    mainPresenter.loadRepositories(editable.toString());
+                }
+            }
+
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+        });
+    }
+
+    private void setupRecyclerView(RecyclerView recyclerView) {
+        RepositoryAdapter adapter = new RepositoryAdapter();
+        adapter.setCallback(new RepositoryAdapter.Callback() {
+            @Override
+            public void onItemClick(Repository repository) {
+                startActivity(RepoActivity.newInstance(MainActivity.this, repository));
+            }
+        });
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+    }
+
+    //region view overrides
     @Override
     public void showRepositories(List<Repository> repositories) {
         RepositoryAdapter adapter = (RepositoryAdapter) getViewBinding().reposRecyclerView.getAdapter();
@@ -63,46 +107,6 @@ public class MainActivity extends BaseActivity<MainActivityBinding> implements M
 		getViewBinding().textInfo.setVisibility(View.INVISIBLE);
 		getViewBinding().reposRecyclerView.setVisibility(View.INVISIBLE);
 	}
-
-	@Override
-	public Context getContext() {
-		return this;
-	}
-
-    @Override
-    protected void onDestroy() {
-        mainPresenter.detachView();
-        super.onDestroy();
-    }
-
-    private void initViews() {
-        setSupportActionBar(getViewBinding().toolbar);
-        setupRecyclerView(getViewBinding().reposRecyclerView);
-        getViewBinding().editTextUsername.addTextChangedListener(new TextWatcher() {
-            public void afterTextChanged(Editable editable) {
-                if (editable.length() > 3) {
-                    mainPresenter.loadRepositories(editable.toString());
-                }
-            }
-
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
-        });
-    }
-
-	private void setupRecyclerView(RecyclerView recyclerView) {
-		RepositoryAdapter adapter = new RepositoryAdapter();
-		adapter.setCallback(new RepositoryAdapter.Callback() {
-			@Override
-			public void onItemClick(Repository repository) {
-				startActivity(RepoActivity.newInstance(MainActivity.this, repository));
-			}
-		});
-		recyclerView.setAdapter(adapter);
-		recyclerView.setLayoutManager(new LinearLayoutManager(this));
-	}
+    //endregion
 
 }

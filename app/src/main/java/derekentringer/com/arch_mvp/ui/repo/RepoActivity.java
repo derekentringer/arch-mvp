@@ -20,10 +20,16 @@ public class RepoActivity extends BaseActivity<RepoActivityBinding> implements R
 
     private RepoPresenter repoPresenter;
 
+    //region lifecycle
     public static Intent newInstance(Context context, Repository repository) {
         Intent intent = new Intent(context, RepoActivity.class);
         intent.putExtra(EXTRA_REPOSITORY, repository);
         return intent;
+    }
+
+    @Override
+    public Context getContext() {
+        return this;
     }
 
     @Override
@@ -39,25 +45,11 @@ public class RepoActivity extends BaseActivity<RepoActivityBinding> implements R
     }
 
     @Override
-    public Context getContext() {
-        return this;
-    }
-
-    @Override
-    public void showUser(final User user) {
-        getViewBinding().textOwnerName.setText(user.getName());
-        getViewBinding().textOwnerEmail.setText(user.getEmail());
-        getViewBinding().textOwnerEmail.setVisibility(user.hasEmail() ? View.VISIBLE : View.GONE);
-        getViewBinding().textOwnerLocation.setText(user.getLocation());
-        getViewBinding().textOwnerLocation.setVisibility(user.hasLocation() ? View.VISIBLE : View.GONE);
-        getViewBinding().layoutOwner.setVisibility(View.VISIBLE);
-    }
-
-    @Override
     protected void onDestroy() {
         repoPresenter.detachView();
         super.onDestroy();
     }
+    //endregion
 
     private void initViews() {
         Repository repository = getIntent().getParcelableExtra(EXTRA_REPOSITORY);
@@ -70,6 +62,17 @@ public class RepoActivity extends BaseActivity<RepoActivityBinding> implements R
 
         showRepoInfo(repository);
         repoPresenter.loadUser(repository.getOwner().getUrl());
+    }
+
+    //region view overrides
+    @Override
+    public void showUser(final User user) {
+        getViewBinding().textOwnerName.setText(user.getName());
+        getViewBinding().textOwnerEmail.setText(user.getEmail());
+        getViewBinding().textOwnerEmail.setVisibility(user.hasEmail() ? View.VISIBLE : View.GONE);
+        getViewBinding().textOwnerLocation.setText(user.getLocation());
+        getViewBinding().textOwnerLocation.setVisibility(user.hasLocation() ? View.VISIBLE : View.GONE);
+        getViewBinding().layoutOwner.setVisibility(View.VISIBLE);
     }
 
     private void showRepoInfo(final Repository repository) {
@@ -86,5 +89,6 @@ public class RepoActivity extends BaseActivity<RepoActivityBinding> implements R
                 .placeholder(R.drawable.placeholder)
                 .into(getViewBinding().imageOwner);
     }
+    //endregion
 
 }
