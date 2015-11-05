@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.android.databinding'
+apply plugin: 'me.tatarka.retrolambda'
 
 android {
     compileSdkVersion rootProject.ext.androidCompileSdkVersion
@@ -18,12 +19,17 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {
     Map<String, String> dependencies = rootProject.ext.dependencies;
 
     compile dependencies.appCompat
+    compile dependencies.designSupport
     compile dependencies.cardView
     compile dependencies.recyclerView
     compile dependencies.retrofit
@@ -36,5 +42,4 @@ dependencies {
     testCompile dependencies.jUnit
     testCompile dependencies.mockito
     testCompile dependencies.robolectric
-    compile 'com.android.support:design:23.1.0'
 }

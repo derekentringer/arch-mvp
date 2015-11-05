@@ -7,6 +7,8 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -37,6 +39,10 @@ public class MainActivity extends BaseActivity<MainActivityBinding> implements M
 		mainPresenter.attachView(this);
 
 		setContentView(R.layout.activity_main);
+
+        TextView view = (TextView) findViewById(R.id.edit_text_username);
+        view.setOnClickListener(e -> Toast.makeText(this, "enter a username", Toast.LENGTH_LONG).show());
+
 
 		initViews();
 	}
