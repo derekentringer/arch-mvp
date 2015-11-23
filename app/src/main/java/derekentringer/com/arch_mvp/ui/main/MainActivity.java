@@ -43,7 +43,6 @@ public class MainActivity extends BaseActivity<MainActivityBinding> implements M
         TextView view = (TextView) findViewById(R.id.edit_text_username);
         view.setOnClickListener(e -> Toast.makeText(this, "enter a username", Toast.LENGTH_LONG).show());
 
-
 		initViews();
 	}
 
